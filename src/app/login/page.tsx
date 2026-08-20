@@ -16,7 +16,7 @@ export default function PaginaLogin() {
         <header className="rounded-t-lg bg-siga px-6 py-5 text-white">
           <h1 className="text-xl font-bold tracking-wide">SIGA ICACRUZ</h1>
           <p className="text-xs opacity-80">
-            Sistema Integrado de Gestión de Activos
+            Sistema Integrado de Gestión de Bienes
           </p>
           <p className="mt-1 text-xs opacity-80">{INSTITUCION}</p>
         </header>
