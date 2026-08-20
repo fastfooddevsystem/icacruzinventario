@@ -5,6 +5,7 @@ export interface FiltrosActivos {
   q?: string;
   categoria?: string;
   ubicacion?: string;
+  responsable?: string;
   estado?: string;
   verificacion?: string;
 }
@@ -37,6 +38,7 @@ function consultaActivos(
   }
   if (f.categoria) consulta = consulta.eq("categoria", f.categoria);
   if (f.ubicacion) consulta = consulta.eq("ubicacion", f.ubicacion);
+  if (f.responsable) consulta = consulta.eq("responsable", f.responsable);
   if (f.estado) consulta = consulta.eq("estado", f.estado);
   if (f.verificacion) consulta = consulta.eq("verificacion", f.verificacion);
 

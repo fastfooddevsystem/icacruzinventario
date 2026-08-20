@@ -75,6 +75,98 @@ export async function subirFoto(
     .from("activo_fotos")
     .insert({ activo_id: activo.id, foto_id: foto.id });
 
+  await supabase.from("movimientos").insert({
+    activo_id: activo.id,
+    tipo: "FOTO_ALTA",
+    detalle: `Foto agregada (${ruta})`,
+    usuario: perfil.nombre,
+  });
+
   revalidatePath(`/inventario/${codigo}`);
   return {};
+}
+
+/**
+ * Quita la foto de ESTE bien y nada mas: borra la fila de activo_fotos.
+ * El archivo y la foto siguen existiendo para los demas bienes, que es lo
+ * que casi siempre se quiere cuando la foto es la vista general del ambiente.
+ */
+export async function desvincularFoto(datos: FormData) {
+  const codigo = String(datos.get("codigo") ?? "").trim();
+  const fotoId = Number(datos.get("foto") ?? 0);
+  if (!codigo || !fotoId) return;
+
+  const perfil = await perfilActual();
+  const supabase = await crearClienteServidor();
+
+  const [{ data: activo }, { data: foto }] = await Promise.all([
+    supabase.from("activos").select("id").eq("codigo", codigo).maybeSingle(),
+    supabase.from("fotos").select("ruta").eq("id", fotoId).maybeSingle(),
+  ]);
+  if (!activo) return;
+
+  const { error } = await supabase
+    .from("activo_fotos")
+    .delete()
+    .eq("activo_id", activo.id)
+    .eq("foto_id", fotoId);
+
+  if (error) return;
+
+  await supabase.from("movimientos").insert({
+    activo_id: activo.id,
+    tipo: "FOTO_BAJA",
+    detalle: `Foto quitada de este bien (${foto?.ruta ?? fotoId}). El archivo se conserva para los demas bienes.`,
+    usuario: perfil.nombre,
+  });
+
+  revalidatePath(`/inventario/${codigo}`);
+  revalidatePath("/inventario");
+}
+
+/**
+ * Elimina la foto del sistema: la fila de fotos, sus vinculos (en cascada)
+ * y el archivo del bucket. Solo admin; el RLS lo exige igual.
+ *
+ * El orden no es casual. Primero se borra la fila y despues el archivo:
+ * si fallara el segundo paso queda un archivo huerfano, que solo ocupa
+ * espacio. Al reves quedarian filas apuntando a un archivo inexistente,
+ * que es justo lo que hace aparecer el aviso de "rutas sin archivo".
+ */
+export async function eliminarFoto(datos: FormData) {
+  const perfil = await perfilActual();
+  if (perfil.rol !== "admin") return;
+
+  const codigo = String(datos.get("codigo") ?? "").trim();
+  const fotoId = Number(datos.get("foto") ?? 0);
+  if (!fotoId) return;
+
+  const supabase = await crearClienteServidor();
+
+  const [{ data: foto }, { data: vinculos }] = await Promise.all([
+    supabase.from("fotos").select("ruta").eq("id", fotoId).maybeSingle(),
+    supabase.from("activo_fotos").select("activo_id").eq("foto_id", fotoId),
+  ]);
+  if (!foto) return;
+
+  const afectados = (vinculos ?? []).map((v) => v.activo_id as number);
+
+  const { error } = await supabase.from("fotos").delete().eq("id", fotoId);
+  if (error) return;
+
+  // Se registra en la ficha de cada bien que la tenia, no solo en la actual.
+  if (afectados.length)
+    await supabase.from("movimientos").insert(
+      afectados.map((activo_id) => ({
+        activo_id,
+        tipo: "FOTO_BAJA",
+        detalle: `Foto eliminada del sistema (${foto.ruta}), junto con su archivo.`,
+        usuario: perfil.nombre,
+      })),
+    );
+
+  await supabase.storage.from(BUCKET).remove([foto.ruta]);
+
+  revalidatePath(`/inventario/${codigo}`);
+  revalidatePath("/inventario");
 }

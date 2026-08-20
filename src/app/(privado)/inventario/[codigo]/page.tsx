@@ -139,7 +139,12 @@ export default async function PaginaFicha({
       </Tarjeta>
 
       <Tarjeta titulo={`Fotos (${galeria.fotos.length})`}>
-        <Galeria fotos={galeria.fotos} problema={galeria.problema} />
+        <Galeria
+          fotos={galeria.fotos}
+          problema={galeria.problema}
+          codigo={a.codigo}
+          esAdmin={perfil.rol === "admin"}
+        />
         <SubirFoto codigo={a.codigo} />
       </Tarjeta>
 

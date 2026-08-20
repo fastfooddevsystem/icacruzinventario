@@ -1,5 +1,5 @@
 import { cargarCatalogos, listarActivos, type FiltrosActivos } from "./consultas";
-import { BUCKET } from "./fotos";
+import { BUCKET, ordenFotos } from "./fotos";
 import { crearClienteServidor } from "./supabase/server";
 import type { Activo } from "./tipos";
 
@@ -42,6 +42,7 @@ export function filtrosDesdeUrl(url: string): FiltrosActivos {
     q: v("q"),
     categoria: v("categoria"),
     ubicacion: v("ubicacion"),
+    responsable: v("responsable"),
     estado: v("estado"),
     verificacion: v("verificacion"),
   };
@@ -110,6 +111,7 @@ export function resumen(filas: FilaExport[]) {
     porCategoria: agrupar("categoria_nombre"),
     porEstado: agrupar("estado"),
     porUbicacion: agrupar("ubicacion"),
+    porResponsable: agrupar("responsable"),
     porVerificacion: agrupar("verificacion"),
   };
 }
@@ -148,20 +150,22 @@ export async function fotosParaAnexo(
   const supabase = await crearClienteServidor();
   const { data, error } = await supabase
     .from("activo_fotos")
-    .select("activo_id, fotos(ruta, alcance)")
+    .select("activo_id, fotos(ruta, alcance, creado_en)")
     .in("activo_id", conFoto.map((f) => f.id));
 
   if (error) return { fotos: [], omitidos: 0 };
 
-  // Se queda con una sola foto por bien: la del bien gana a la del ambiente.
-  const elegida = new Map<number, { ruta: string; alcance: string }>();
+  // Una sola foto por bien, con la misma regla que usa la galeria:
+  // la del bien le gana a la del ambiente, y la mas reciente a la vieja.
+  type Elegible = { ruta: string; alcance: string; creado_en: string };
+  const elegida = new Map<number, Elegible>();
   for (const v of data ?? []) {
     const foto = (Array.isArray(v.fotos) ? v.fotos[0] : v.fotos) as
-      | { ruta: string; alcance: string }
+      | Elegible
       | undefined;
     if (!foto) continue;
     const previa = elegida.get(v.activo_id as number);
-    if (!previa || (previa.alcance === "puesto" && foto.alcance === "bien"))
+    if (!previa || ordenFotos(foto, previa) < 0)
       elegida.set(v.activo_id as number, foto);
   }
 

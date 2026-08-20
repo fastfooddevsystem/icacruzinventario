@@ -7,10 +7,15 @@ import { CONDICIONES_VERIF, ESTADOS, type Categoria } from "@/lib/tipos";
 interface Props {
   categorias: Categoria[];
   ubicaciones: string[];
+  responsables: string[];
 }
 
 /** Barra de búsqueda y filtros: escribe los criterios en la URL. */
-export default function FiltrosInventario({ categorias, ubicaciones }: Props) {
+export default function FiltrosInventario({
+  categorias,
+  ubicaciones,
+  responsables,
+}: Props) {
   const router = useRouter();
   const params = useSearchParams();
   const [pendiente, iniciar] = useTransition();
@@ -68,6 +73,19 @@ export default function FiltrosInventario({ categorias, ubicaciones }: Props) {
         {ubicaciones.map((u) => (
           <option key={u} value={u}>
             {u}
+          </option>
+        ))}
+      </select>
+
+      <select
+        value={sel("responsable")}
+        onChange={(e) => aplicar({ responsable: e.target.value })}
+        className={clases}
+      >
+        <option value="">Todos los responsables</option>
+        {responsables.map((r) => (
+          <option key={r} value={r}>
+            {r}
           </option>
         ))}
       </select>

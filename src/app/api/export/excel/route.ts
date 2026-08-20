@@ -86,6 +86,7 @@ export async function GET(request: Request) {
     ["Por categoria", r.porCategoria],
     ["Por estado", r.porEstado],
     ["Por ubicacion", r.porUbicacion],
+    ["Por responsable", r.porResponsable],
     ["Por verificacion", r.porVerificacion],
   ] as const) {
     for (const col of [1, 2]) {

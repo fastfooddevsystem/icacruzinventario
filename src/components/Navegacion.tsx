@@ -8,6 +8,7 @@ const PESTANAS = [
   { href: "/inventario", texto: "Inventario" },
   { href: "/inventario/nuevo", texto: "Registrar" },
   { href: "/verificacion", texto: "Verificación física" },
+  { href: "/reportes", texto: "Reportes" },
 ];
 
 export default function Navegacion({ esAdmin }: { esAdmin: boolean }) {

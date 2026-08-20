@@ -90,6 +90,7 @@ export async function GET(request: Request) {
     ["Por estado", r.porEstado],
     ["Por categoria", r.porCategoria],
     ["Por ubicacion", r.porUbicacion],
+    ["Por responsable", r.porResponsable],
     ["Por verificacion", r.porVerificacion],
   ] as const) {
     cuerpo.push([titulo.toUpperCase(), ""]);

@@ -26,6 +26,7 @@ export default async function PaginaInventario({
     q: uno("q"),
     categoria: uno("categoria"),
     ubicacion: uno("ubicacion"),
+    responsable: uno("responsable"),
     estado: uno("estado"),
     verificacion: uno("verificacion"),
   };
@@ -65,7 +66,11 @@ export default async function PaginaInventario({
         </div>
       )}
 
-      <FiltrosInventario categorias={categorias} ubicaciones={ubicaciones} />
+      <FiltrosInventario
+        categorias={categorias}
+        ubicaciones={ubicaciones}
+        responsables={responsables}
+      />
 
       <div className="noprint mb-3 flex flex-wrap items-center gap-2">
         <Link
@@ -74,30 +79,12 @@ export default async function PaginaInventario({
         >
           + Registrar bien
         </Link>
-        <a
-          href={`/api/export/excel?${consulta}`}
-          className="rounded bg-siga px-3 py-1.5 text-[13px] text-white hover:bg-siga-claro"
+        <Link
+          href={`/reportes${consulta ? `?${consulta}` : ""}`}
+          className="rounded border border-siga bg-white px-3 py-1.5 text-[13px] font-semibold text-siga hover:bg-siga/5"
         >
-          Exportar Excel
-        </a>
-        <a
-          href={`/api/export/pdf?${consulta}`}
-          className="rounded bg-siga px-3 py-1.5 text-[13px] text-white hover:bg-siga-claro"
-        >
-          Exportar PDF
-        </a>
-        <a
-          href={`/api/export/pdf?${consulta}${consulta ? "&" : ""}fotos=1`}
-          className="rounded border border-siga bg-white px-3 py-1.5 text-[13px] text-siga hover:bg-siga/5"
-        >
-          PDF con fotos
-        </a>
-        <a
-          href={`/api/export/etiquetas?${consulta}`}
-          className="rounded border border-slate-300 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-100"
-        >
-          Imprimir etiquetas
-        </a>
+          Generar reporte →
+        </Link>
         <span className="ml-auto text-[12.5px] text-slate-500">
           {total
             ? `Mostrando ${desde}–${hasta} de ${total} bien(es)`
