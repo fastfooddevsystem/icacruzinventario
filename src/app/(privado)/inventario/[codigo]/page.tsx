@@ -5,11 +5,14 @@ import {
   EtiquetaVerificacion,
   Tarjeta,
 } from "@/components/ui";
+import { fotosDelActivo } from "@/lib/fotos";
 import { perfilActual } from "@/lib/sesion";
 import { crearClienteServidor } from "@/lib/supabase/server";
 import { bs, type Activo, type Categoria, type Movimiento } from "@/lib/tipos";
 import { eliminarActivo } from "../acciones";
+import Galeria from "./Galeria";
 import PanelVerificacion from "./PanelVerificacion";
+import SubirFoto from "./SubirFoto";
 
 export default async function PaginaFicha({
   params,
@@ -32,7 +35,7 @@ export default async function PaginaFicha({
   if (!activo) notFound();
   const a = activo as Activo;
 
-  const [{ data: movimientos }, { data: categoria }, { data: ubicaciones }] =
+  const [{ data: movimientos }, { data: categoria }, { data: ubicaciones }, galeria] =
     await Promise.all([
       supabase
         .from("movimientos")
@@ -45,6 +48,7 @@ export default async function PaginaFicha({
         .eq("codigo", a.categoria)
         .maybeSingle(),
       supabase.from("ubicaciones").select("nombre").order("nombre"),
+      fotosDelActivo(a.id),
     ]);
 
   const nombreCategoria = (categoria as Categoria | null)?.nombre ?? a.categoria;
@@ -63,7 +67,7 @@ export default async function PaginaFicha({
         {/* Encabezado: el código es el identificador del bien */}
         <div className="flex flex-wrap items-start justify-between gap-4 border-b border-slate-200 pb-3">
           <div>
-            <div className="font-mono text-2xl font-bold tracking-wide text-[#1f3864]">
+            <div className="font-mono text-2xl font-bold tracking-wide text-siga">
               {a.codigo}
             </div>
             <div className="mt-0.5 text-[15px] font-semibold">
@@ -74,7 +78,7 @@ export default async function PaginaFicha({
           <div className="noprint flex flex-wrap gap-2">
             <Link
               href={`/inventario/${a.codigo}/editar`}
-              className="rounded border border-slate-300 bg-white px-3 py-1.5 text-[13px] hover:bg-slate-100"
+              className="rounded bg-siga px-3 py-1.5 text-[13px] font-semibold text-white hover:bg-siga-claro"
             >
               Editar datos
             </Link>
@@ -89,7 +93,7 @@ export default async function PaginaFicha({
                 <input type="hidden" name="codigo" value={a.codigo} />
                 <button
                   type="submit"
-                  className="rounded border border-red-200 bg-white px-3 py-1.5 text-[13px] text-red-700 hover:bg-red-50"
+                  className="rounded border border-siga-rojo/40 bg-white px-3 py-1.5 text-[13px] text-siga-rojo hover:bg-siga-rojo/5"
                 >
                   Eliminar
                 </button>
@@ -132,6 +136,11 @@ export default async function PaginaFicha({
             <Dato etiqueta="Observaciones">{a.observaciones}</Dato>
           </div>
         )}
+      </Tarjeta>
+
+      <Tarjeta titulo={`Fotos (${galeria.fotos.length})`}>
+        <Galeria fotos={galeria.fotos} problema={galeria.problema} />
+        <SubirFoto codigo={a.codigo} />
       </Tarjeta>
 
       <PanelVerificacion

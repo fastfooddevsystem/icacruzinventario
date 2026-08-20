@@ -21,12 +21,12 @@ export default function BuscarCodigo() {
         onChange={(e) => setCodigo(e.target.value)}
         onKeyDown={(e) => e.key === "Enter" && abrir()}
         placeholder={`Escriba el código del bien (ej. ${PREFIJO}-LPT-0001)`}
-        className="min-w-[230px] flex-1 rounded border border-slate-300 px-2.5 py-1.5 font-mono text-sm uppercase outline-none focus:border-[#2d4f8f] focus:ring-2 focus:ring-slate-200"
+        className="min-w-[230px] flex-1 rounded border border-slate-300 px-2.5 py-1.5 font-mono text-sm uppercase outline-none focus:border-siga focus:ring-2 focus:ring-siga/20"
       />
       <button
         type="button"
         onClick={abrir}
-        className="rounded bg-[#1f3864] px-4 py-1.5 text-[13px] font-semibold text-white hover:bg-[#2d4f8f]"
+        className="rounded bg-siga px-4 py-1.5 text-[13px] font-semibold text-white hover:bg-siga-claro"
       >
         Abrir ficha
       </button>

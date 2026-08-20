@@ -32,7 +32,7 @@ export default function Navegacion({ esAdmin }: { esAdmin: boolean }) {
             href={p.href}
             className={`rounded px-3 py-1.5 text-[13px] transition ${
               activa
-                ? "bg-white font-semibold text-[#1f3864]"
+                ? "bg-white font-semibold text-siga"
                 : "text-slate-200 hover:bg-white/15 hover:text-white"
             }`}
           >

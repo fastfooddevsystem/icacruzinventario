@@ -7,10 +7,9 @@ import {
   filtrosDesdeUrl,
   hoy,
   resumen,
+  VERDE_ARGB,
   type FilaExport,
 } from "@/lib/exportar";
-
-const AZUL = "FF1F3864";
 
 export async function GET(request: Request) {
   const { filas, categorias } = await datosExport(filtrosDesdeUrl(request.url));
@@ -38,7 +37,7 @@ export async function GET(request: Request) {
     const c = ws.getCell(4, i + 1);
     c.value = titulo;
     c.font = { bold: true, color: { argb: "FFFFFFFF" } };
-    c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: AZUL } };
+    c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: VERDE_ARGB } };
     c.alignment = { horizontal: "center", vertical: "middle", wrapText: true };
     c.border = borde();
   });
@@ -47,17 +46,21 @@ export async function GET(request: Request) {
     ENCABEZADOS.forEach(([clave], j) => {
       const c = ws.getCell(5 + i, j + 1);
       const valor = f[clave as keyof FilaExport];
-      c.value = clave === "valor" ? Number(valor ?? 0) : ((valor ?? "") as string);
+      c.value =
+        clave === "valor" || clave === "fotos"
+          ? Number(valor ?? 0)
+          : ((valor ?? "") as string);
       c.border = borde();
       c.alignment = {
         vertical: "top",
         wrapText: clave === "caracteristicas" || clave === "observaciones",
       };
       if (clave === "valor") c.numFmt = "#,##0.00";
+      if (clave === "fotos") c.alignment = { horizontal: "center", vertical: "top" };
     });
   });
 
-  [16, 24, 30, 14, 16, 18, 28, 18, 20, 14, 14, 15, 13, 14, 18, 28].forEach(
+  [16, 24, 30, 14, 16, 18, 28, 18, 20, 14, 14, 15, 13, 14, 18, 28, 8].forEach(
     (w, i) => (ws.getColumn(i + 1).width = w),
   );
   ws.views = [{ state: "frozen", ySplit: 4 }];
@@ -89,7 +92,7 @@ export async function GET(request: Request) {
       const c = ws2.getCell(fila, col);
       c.value = col === 1 ? titulo : "Cantidad";
       c.font = { bold: true, color: { argb: "FFFFFFFF" } };
-      c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: AZUL } };
+      c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: VERDE_ARGB } };
     }
     fila++;
     for (const d of datos) {
@@ -110,7 +113,7 @@ export async function GET(request: Request) {
     const c = ws3.getCell(3, i + 1);
     c.value = t;
     c.font = { bold: true, color: { argb: "FFFFFFFF" } };
-    c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: AZUL } };
+    c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: VERDE_ARGB } };
   });
   categorias.forEach((cat, i) => {
     ws3.getCell(4 + i, 1).value = cat.codigo;

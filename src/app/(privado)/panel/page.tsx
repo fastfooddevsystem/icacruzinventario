@@ -104,7 +104,7 @@ export default async function PaginaPanel() {
         ) : (
           <p className="text-[12.5px] text-slate-500">
             Todavía no hay bienes registrados. Comience en{" "}
-            <Link href="/inventario/nuevo" className="font-semibold text-[#1f3864] hover:underline">
+            <Link href="/inventario/nuevo" className="font-semibold text-siga hover:underline">
               Registrar
             </Link>
             .

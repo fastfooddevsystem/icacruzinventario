@@ -151,7 +151,10 @@ export async function actualizarActivo(
   revalidatePath("/inventario");
   revalidatePath(`/inventario/${codigo}`);
   revalidatePath("/panel");
-  redirect(`/inventario/${codigo}?guardado=1`);
+
+  // Al editar desde la lista se vuelve a la lista, con los filtros intactos.
+  const retorno = String(datos.get("retorno") ?? "").trim();
+  redirect(retorno || `/inventario/${codigo}?guardado=1`);
 }
 
 /** Elimina un bien. Solo el administrador puede hacerlo (tambien lo exige el RLS). */

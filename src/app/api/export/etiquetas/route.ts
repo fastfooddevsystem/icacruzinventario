@@ -1,6 +1,6 @@
 import { jsPDF } from "jspdf";
 import { INSTITUCION } from "@/lib/supabase/config";
-import { datosExport, filtrosDesdeUrl, hoy } from "@/lib/exportar";
+import { datosExport, filtrosDesdeUrl, hoy, VERDE_RGB } from "@/lib/exportar";
 
 /**
  * Hoja A4 de etiquetas imprimibles (3 columnas x 8 filas = 24 por hoja).
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 
     // El codigo es el identificador del bien: va en grande y destacado
     ty += 8;
-    doc.setFont("courier", "bold").setFontSize(15).setTextColor(31, 56, 100);
+    doc.setFont("courier", "bold").setFontSize(15).setTextColor(...VERDE_RGB);
     doc.text(f.codigo, tx, ty);
 
     ty += 6;

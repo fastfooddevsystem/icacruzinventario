@@ -31,7 +31,7 @@ export function Indicador({
   etiqueta: string;
 }) {
   return (
-    <div className="rounded border border-slate-300 border-l-[3px] border-l-[#1f3864] bg-white px-3.5 py-3">
+    <div className="rounded border border-slate-300 border-l-[3px] border-l-siga bg-white px-3.5 py-3">
       <div className="text-2xl font-bold leading-tight">{numero}</div>
       <div className="mt-0.5 text-[11px] uppercase tracking-wide text-slate-500">
         {etiqueta}
@@ -60,7 +60,7 @@ export function Barras({
           </span>
           <span className="h-3 flex-1 overflow-hidden rounded-sm bg-slate-200">
             <span
-              className="block h-full min-w-[2px] bg-[#2d4f8f]"
+              className="block h-full min-w-[2px] bg-siga"
               style={{ width: `${(d.total / max) * 100}%` }}
             />
           </span>
@@ -102,7 +102,7 @@ export function EtiquetaVerificacion({ valor }: { valor: string }) {
 /** Código institucional del bien, resaltado como identificador. */
 export function Codigo({ children }: { children: React.ReactNode }) {
   return (
-    <span className="font-mono text-[12px] font-semibold text-[#1f3864]">
+    <span className="font-mono text-[12px] font-semibold text-siga">
       {children}
     </span>
   );

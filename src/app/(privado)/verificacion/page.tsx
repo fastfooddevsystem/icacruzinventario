@@ -61,7 +61,7 @@ export default async function PaginaVerificacion({
           <form action={reiniciarVerificacion} className="noprint mt-3.5">
             <button
               type="submit"
-              className="rounded border border-red-200 bg-white px-3 py-1.5 text-[13px] text-red-700 hover:bg-red-50"
+              className="rounded border border-siga-rojo/40 bg-white px-3 py-1.5 text-[13px] text-siga-rojo hover:bg-siga-rojo/5"
             >
               Iniciar nueva toma de inventario
             </button>

@@ -74,7 +74,7 @@ export default function PanelVerificacion({
           <button
             type="submit"
             disabled={pendiente}
-            className="rounded bg-[#1f3864] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2d4f8f] disabled:opacity-60"
+            className="rounded bg-siga px-4 py-2 text-sm font-semibold text-white hover:bg-siga-claro disabled:opacity-60"
           >
             {pendiente ? "Registrando…" : "Confirmar verificación"}
           </button>
@@ -85,7 +85,7 @@ export default function PanelVerificacion({
 }
 
 const clases =
-  "w-full rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-[#2d4f8f] focus:ring-2 focus:ring-slate-200";
+  "w-full rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-siga focus:ring-2 focus:ring-siga/20";
 
 function Campo({
   etiqueta,

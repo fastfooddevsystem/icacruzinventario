@@ -18,6 +18,10 @@ interface Props {
   responsables: string[];
   accion: (previo: EstadoActivo, datos: FormData) => Promise<EstadoActivo>;
   activo?: Activo;
+  /** A donde volver al guardar. Por defecto, a la ficha del bien. */
+  retorno?: string;
+  /** Si se pasa, Cancelar cierra en vez de navegar (uso dentro de la ventana). */
+  alCancelar?: () => void;
 }
 
 export default function FormularioActivo({
@@ -26,6 +30,8 @@ export default function FormularioActivo({
   responsables,
   accion,
   activo,
+  retorno,
+  alCancelar,
 }: Props) {
   const [estado, enviar, pendiente] = useActionState(accion, INICIAL);
   const esEdicion = Boolean(activo);
@@ -33,12 +39,13 @@ export default function FormularioActivo({
   return (
     <form action={enviar}>
       {esEdicion && <input type="hidden" name="codigo" value={activo!.codigo} />}
+      {retorno && <input type="hidden" name="retorno" value={retorno} />}
 
       <div className="mb-3 rounded border border-slate-300 bg-slate-50 px-3 py-2 text-[12.5px] text-slate-600">
         {esEdicion ? (
           <>
             Editando el bien{" "}
-            <strong className="font-mono text-[#1f3864]">
+            <strong className="font-mono text-siga">
               {activo!.codigo}
             </strong>
             . La categoría no se cambia porque define el código.
@@ -196,7 +203,7 @@ export default function FormularioActivo({
         <button
           type="submit"
           disabled={pendiente}
-          className="rounded bg-[#1f3864] px-4 py-2 text-sm font-semibold text-white hover:bg-[#2d4f8f] disabled:opacity-60"
+          className="rounded bg-siga px-4 py-2 text-sm font-semibold text-white hover:bg-siga-claro disabled:opacity-60"
         >
           {pendiente
             ? "Guardando…"
@@ -204,19 +211,29 @@ export default function FormularioActivo({
               ? `Guardar cambios de ${activo!.codigo}`
               : "Guardar bien"}
         </button>
-        <Link
-          href={esEdicion ? `/inventario/${activo!.codigo}` : "/inventario"}
-          className="rounded border border-slate-300 bg-white px-4 py-2 text-sm hover:bg-slate-100"
-        >
-          Cancelar
-        </Link>
+        {alCancelar ? (
+          <button
+            type="button"
+            onClick={alCancelar}
+            className="rounded border border-slate-300 bg-white px-4 py-2 text-sm hover:bg-slate-100"
+          >
+            Cancelar
+          </button>
+        ) : (
+          <Link
+            href={esEdicion ? `/inventario/${activo!.codigo}` : "/inventario"}
+            className="rounded border border-slate-300 bg-white px-4 py-2 text-sm hover:bg-slate-100"
+          >
+            Cancelar
+          </Link>
+        )}
       </div>
     </form>
   );
 }
 
 const clases =
-  "w-full rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-[#2d4f8f] focus:ring-2 focus:ring-slate-200";
+  "w-full rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-siga focus:ring-2 focus:ring-siga/20";
 
 function Campo({
   etiqueta,

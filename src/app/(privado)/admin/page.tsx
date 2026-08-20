@@ -95,7 +95,7 @@ export default async function PaginaAdmin({
                         </select>
                         <button
                           type="submit"
-                          className="rounded bg-[#1f3864] px-2.5 py-1 text-[12.5px] text-white hover:bg-[#2d4f8f]"
+                          className="rounded bg-siga px-2.5 py-1 text-[12.5px] text-white hover:bg-siga-claro"
                         >
                           Aplicar
                         </button>
@@ -142,7 +142,7 @@ export default async function PaginaAdmin({
             </div>
             <button
               type="submit"
-              className="rounded bg-[#1f3864] px-3 py-1.5 text-[13px] text-white hover:bg-[#2d4f8f]"
+              className="rounded bg-siga px-3 py-1.5 text-[13px] text-white hover:bg-siga-claro"
             >
               Agregar
             </button>
@@ -165,7 +165,7 @@ export default async function PaginaAdmin({
               <tbody>
                 {((categorias ?? []) as Categoria[]).map((c) => (
                   <tr key={c.codigo} className="border-b border-slate-100">
-                    <td className="px-2 py-1 font-mono font-semibold text-[#1f3864]">
+                    <td className="px-2 py-1 font-mono font-semibold text-siga">
                       {c.codigo}
                     </td>
                     <td className="px-2 py-1">{c.nombre}</td>
@@ -221,7 +221,7 @@ function ListaCatalogo({
         />
         <button
           type="submit"
-          className="rounded bg-[#1f3864] px-3 py-1.5 text-[13px] text-white hover:bg-[#2d4f8f]"
+          className="rounded bg-siga px-3 py-1.5 text-[13px] text-white hover:bg-siga-claro"
         >
           Agregar
         </button>
@@ -245,6 +245,6 @@ function ListaCatalogo({
 }
 
 const campo =
-  "rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-[#2d4f8f] focus:ring-2 focus:ring-slate-200";
+  "rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-siga focus:ring-2 focus:ring-siga/20";
 const etiqueta =
   "mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500";

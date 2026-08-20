@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
-/* Paleta institucional SIGA */
-@theme inline {
-  --color-siga: #1f3864;
-  --color-siga-claro: #2d4f8f;
+/*
+ * Paleta institucional: tomada del emblema del Colegio de Abogados de
+ * Santa Cruz - Bolivia. El verde es el color de marca (cabecera, botones
+ * principales) y el rojo se reserva para acciones que no se pueden deshacer.
+ */
+@theme {
+  --color-siga: #1b6e3c;
+  --color-siga-claro: #218044;
+  --color-siga-oscuro: #12522c;
+  --color-siga-rojo: #c1121f;
 }
 
 body {

@@ -22,6 +22,8 @@ export default function FiltrosInventario({ categorias, ubicaciones }: Props) {
       if (v) nuevos.set(k, v);
       else nuevos.delete(k);
     }
+    // Cambiar un filtro vuelve al inicio: la pagina anterior ya no aplica.
+    nuevos.delete("pagina");
     iniciar(() => router.replace(`/inventario?${nuevos.toString()}`));
   };
 
@@ -111,4 +113,4 @@ export default function FiltrosInventario({ categorias, ubicaciones }: Props) {
 }
 
 const clases =
-  "rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-[#2d4f8f] focus:ring-2 focus:ring-slate-200";
+  "rounded border border-slate-300 px-2.5 py-1.5 text-sm outline-none focus:border-siga focus:ring-2 focus:ring-siga/20";

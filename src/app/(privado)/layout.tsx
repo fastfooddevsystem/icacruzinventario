@@ -12,7 +12,7 @@ export default async function LayoutPrivado({
 
   return (
     <>
-      <header className="noprint sticky top-0 z-40 flex flex-wrap items-center gap-4 bg-[#1f3864] px-4 py-2.5 text-white">
+      <header className="noprint sticky top-0 z-40 flex flex-wrap items-center gap-4 border-b-2 border-siga-oscuro bg-siga px-4 py-2.5 text-white">
         <div>
           <div className="text-[15px] font-bold tracking-wide">SIGA</div>
           <div className="text-[11.5px] opacity-75">
