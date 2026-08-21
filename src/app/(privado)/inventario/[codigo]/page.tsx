@@ -143,6 +143,7 @@ export default async function PaginaFicha({
           fotos={galeria.fotos}
           problema={galeria.problema}
           codigo={a.codigo}
+          ubicacion={a.ubicacion ?? ""}
           esAdmin={perfil.rol === "admin"}
         />
         <SubirFoto codigo={a.codigo} />

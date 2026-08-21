@@ -10,11 +10,13 @@ export default function Galeria({
   fotos,
   problema,
   codigo,
+  ubicacion,
   esAdmin,
 }: {
   fotos: Foto[];
   problema?: string;
   codigo: string;
+  ubicacion: string;
   esAdmin: boolean;
 }) {
   if (problema)
@@ -81,7 +83,12 @@ export default function Galeria({
             </div>
           </a>
 
-          <AccionesFoto foto={f} codigo={codigo} esAdmin={esAdmin} />
+          <AccionesFoto
+            foto={f}
+            codigo={codigo}
+            ubicacion={ubicacion}
+            esAdmin={esAdmin}
+          />
         </div>
       ))}
     </div>

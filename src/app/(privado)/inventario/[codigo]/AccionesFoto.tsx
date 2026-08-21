@@ -2,20 +2,23 @@
 
 import type { Foto } from "@/lib/fotos";
 import { desvincularFoto, eliminarFoto } from "../acciones-fotos";
+import CompartirFoto from "./CompartirFoto";
 
 /**
- * Las dos bajas posibles de una foto, que no son la misma cosa:
- * quitarla de este bien, o borrarla del sistema. La confirmacion dice
- * siempre a cuantas fichas alcanza, porque una vista general de un
- * ambiente puede estar puesta en decenas de bienes a la vez.
+ * Lo que se puede hacer con una foto ya cargada: extenderla a otros bienes,
+ * quitarla de este, o borrarla del sistema. Las dos bajas no son la misma
+ * cosa, y la confirmacion dice siempre a cuantas fichas alcanza, porque una
+ * vista general de un ambiente puede estar puesta en decenas de bienes.
  */
 export default function AccionesFoto({
   foto,
   codigo,
+  ubicacion,
   esAdmin,
 }: {
   foto: Foto;
   codigo: string;
+  ubicacion: string;
   esAdmin: boolean;
 }) {
   const otros = foto.bienes - 1;
@@ -36,6 +39,8 @@ export default function AccionesFoto({
 
   return (
     <div className="noprint flex flex-wrap items-center gap-1.5 border-t border-slate-200 px-2 py-1.5">
+      <CompartirFoto foto={foto} codigo={codigo} ubicacion={ubicacion} />
+
       <form
         action={desvincularFoto}
         onSubmit={(e) => {

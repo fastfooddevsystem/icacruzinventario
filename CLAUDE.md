@@ -57,6 +57,14 @@ Editar siempre los archivos numerados.
   las fichas migradas la vista general del ambiente se inserto despues de la foto propia
   del bien, asi que ordenar solo por fecha haria que el acta mostrara el escritorio en vez
   del equipo. El nivel de `alcance` va primero por esa razon.
+- **Una foto se puede extender a otros bienes sin volver a subirla**: `vincularFoto`
+  inserta filas de `activo_fotos` para los codigos que se escriban o para todos los
+  bienes de una ubicacion. Es lo unico que permite reproducir desde la aplicacion la
+  vista de ambiente que armo el script de migracion; sin eso, cada bien exige su propia
+  foto y una renovacion pasa de 122 fotos a 274. **No cambia el `alcance` de la foto a
+  proposito**: marcarla `'puesto'` por el hecho de compartirse la haria perder contra
+  cualquier foto vieja de alcance `'bien'` en `ordenFotos()`, y el acta seguiria
+  mostrando la anterior — lo contrario de lo que se busca al refotografiar.
 - Como el bucket es privado, todo se muestra con `createSignedUrls` (vigencia de una
   hora) y el PDF con anexo baja los archivos en base64. Se resuelve por lote para toda
   la pagina, nunca una consulta por fila.
